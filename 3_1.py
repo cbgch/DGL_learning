@@ -1,5 +1,8 @@
 import torch.nn as nn
 from dgl.utils import expand_as_pair #Return a pair of same element if the input is not a pair.
+import dgl.function as fn
+import torch.nn.functional as F
+from dgl.utils import check_eq_shape
 
 class SAGEconv(nn.module):
     # DGL NN模块的构造函数
@@ -47,8 +50,10 @@ class SAGEconv(nn.module):
         消息传递和聚合。
         聚合后，更新特征作为输出。
     """
-    def forward(self,g,feat):
-        with g.local_scope():
-            feat_src,feat_dst = expand_as_pair(feat,g)
+    def forward(self,graph,feat):
+        with graph.local_scope():      #graph.local_scope()函数使得在函数内的修改不会对函数外造成影响
+            feat_src,feat_dst = expand_as_pair(feat,graph)
+            if self.aggr_type == 'mean':
+                print("xasssssssss")
 
 
